@@ -4,12 +4,12 @@ import requests
 
 
 class CandidateScrape:
-    def __init__(self, start_page, stop_page=4671):
-        self.start_page = start_page
-        self.stop_page = stop_page
+    # def __init__(self, ):
+    #     self.start_page = start_page
+    #     self.stop_page = stop_page
 
-    def scrape_url(self):
-        page = self.start_page
+    def scrape_url(self, start_page, stop_page=4671):
+        page = start_page
         cpfs_page = []
         endpoint = f"https://sample-university-site.herokuapp.com/approvals/{page}"
         print(endpoint)
@@ -57,7 +57,7 @@ class CandidateScrape:
 
 if __name__ == "__main__":
 
-    scraper_candidates = CandidateScrape(3)
+    scraper_candidates = CandidateScrape()
 
     # scraper_candidates.scrape_candidate("178.422.117-11")
-    scraper_candidates.scrape_url()
+    scraper_candidates.scrape_url(5)
