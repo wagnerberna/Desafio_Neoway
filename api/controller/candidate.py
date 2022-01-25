@@ -21,13 +21,15 @@ class CandidateRegister(Resource):
         "cpf",
         type=str,
     )
+    attributes.add_argument(
+        "valid_cpf",
+        type=bool,
+    )
 
     def post(self):
-        # print("controller")
         # if CandidateModel.find_candidate(candidate_id):
         #     return {"message": f"candidate ID: {candidate_id} alredy exists"}, 400
         data = Candidate.attributes.parse_args()
-        print(data)
         candidate_model = CandidateModel(**data)
         try:
             candidate_model.save_candidate()
@@ -56,6 +58,12 @@ class Candidate(Resource):
         required=True,
         help="The field 'CPF' cannot be left blank.",
     )
+    attributes.add_argument(
+        "valid_cpf",
+        type=bool,
+        required=True,
+        help="The field 'valid CPF' cannot be left blank.",
+    )
 
     def get(self, candidate_id):
         candidate_model = CandidateModel.find_candidate(candidate_id)
@@ -64,23 +72,13 @@ class Candidate(Resource):
         return {"message": "candidate not found."}, 404
 
     def put(self, candidate_id):
-        print('controller put')
         data = Candidate.attributes.parse_args()
-        print(data)
         candidate_model = CandidateModel.find_candidate(candidate_id)
-
-        # candidate_finded = candidate_model.find_candidate(candidate_id)
-        # print(f"----LOCALIZADO----:{candidate_id}")
-        # if candidate_finded:
         try:
-            print("-----TRY------")
             candidate_model.update_candidate(**data)
-
             return candidate_model.json(), 200
-            # candidate_model.save_candidate()
         except:
             return {"message": "An interna erro ocurred trying to save candidate."}, 500
-        # return candidate_model.json(), 201
 
     def delete(self, candidate_id):
         candidate_model = CandidateModel.find_candidate(candidate_id)

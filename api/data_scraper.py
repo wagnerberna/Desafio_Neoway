@@ -5,10 +5,6 @@ import time
 
 
 class CandidateScrape:
-    # def __init__(self, ):
-    #     self.start_page = start_page
-    #     self.stop_page = stop_page
-
     def scrape_url(self, start_page, stop_page=4671):
 
         for page in range(start_page, stop_page + 1):
@@ -41,19 +37,17 @@ class CandidateScrape:
         endpoint = f"https://sample-university-site.herokuapp.com/candidate/{cpf}"
         req = requests.get(endpoint)
         soup = BeautifulSoup(req.text, "lxml")
-        # print(req.url)
-        # print(soup)
-        path_name = soup.div.next_element
-        # print(path_name)
-        name = path_name.next_element.next_element
-        # print(name)
-        path_score = soup.div.next_sibling.next_sibling.next_element
-        # print(path_score)
-        score = float(path_score.next_element.next_element)
-        # print(score)
 
+        path_name = soup.div.next_element
+        name = path_name.next_element.next_element
+        path_score = soup.div.next_sibling.next_sibling.next_element
+        score = float(path_score.next_element.next_element)
+        payload = {"name": name, "score": score, "cpf": cpf, "valid_cpf": True}
+        self.save_candidate(payload)
+
+    def save_candidate(self, payload):
         url_post = "http://localhost:5000/register"
-        payload = {"name": name, "score": score, "cpf": cpf}
+        # payload = {"name": name, "score": score, "cpf": cpf, "valid_cpf": True}
 
         resp = requests.post(url_post, json=payload)
         print(resp.status_code)
@@ -65,4 +59,4 @@ if __name__ == "__main__":
     scraper_candidates = CandidateScrape()
 
     # scraper_candidates.scrape_candidate("178.422.117-11")
-    scraper_candidates.scrape_url(9, 10)
+    scraper_candidates.scrape_url(1000, 1000)

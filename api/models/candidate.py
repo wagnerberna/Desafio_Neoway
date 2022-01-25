@@ -8,11 +8,13 @@ class CandidateModel(db.Model):
     name = db.Column(db.String(80))
     score = db.Column(db.Float(precision=2))
     cpf = db.Column(db.String(40))
+    valid_cpf = db.Column(db.Boolean)
 
-    def __init__(self, name, score, cpf):
+    def __init__(self, name, score, cpf, valid_cpf):
         self.name = name
         self.score = score
         self.cpf = cpf
+        self.valid_cpf = valid_cpf
 
     def json(self):
         return {
@@ -20,6 +22,7 @@ class CandidateModel(db.Model):
             "name": self.name,
             "score": self.score,
             "cpf": self.cpf,
+            "valid_cpf": self.valid_cpf,
         }
 
     @classmethod
@@ -30,23 +33,16 @@ class CandidateModel(db.Model):
         return None
 
     def save_candidate(self):
-        print("-----Model----")
-        # print(self)
-        print(self.name, self.score, self.cpf)
         db.session.add(self)
-        print("-----Model2----")
         db.session.commit()
 
     def delete_candidate(self):
         db.session.delete(self)
         db.session.commit()
 
-    def update_candidate(self, name, score, cpf):
-        print("---------------------")
-        print(self.name, self.score, self.cpf)
-        print("---------------------")
-        print(name, score, cpf)
+    def update_candidate(self, name, score, cpf, valid_cpf):
         self.name = name
         self.score = score
         self.cpf = cpf
+        self.valid_cpf = valid_cpf
         db.session.commit()
