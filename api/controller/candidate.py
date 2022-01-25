@@ -27,6 +27,7 @@ class CandidateRegister(Resource):
         # if CandidateModel.find_candidate(candidate_id):
         #     return {"message": f"candidate ID: {candidate_id} alredy exists"}, 400
         data = Candidate.attributes.parse_args()
+        print(data)
         candidate_model = CandidateModel(**data)
         try:
             candidate_model.save_candidate()

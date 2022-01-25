@@ -30,10 +30,11 @@ class CandidateModel(db.Model):
         return None
 
     def save_candidate(self):
-        print("---------")
-        print(self)
-        print(self.name)
+        print("-----Model----")
+        # print(self)
+        print(self.name, self.score, self.cpf)
         db.session.add(self)
+        print("-----Model2----")
         db.session.commit()
 
     def delete_candidate(self):

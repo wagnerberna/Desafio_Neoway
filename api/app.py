@@ -10,7 +10,7 @@ api = Api(app)
 
 
 @app.before_first_request
-def cria_db():
+def create_db():
     db.create_all()
 
 
