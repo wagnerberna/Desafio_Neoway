@@ -1,5 +1,6 @@
 from array import array
 from bs4 import BeautifulSoup
+from unicodedata import normalize
 import requests
 import time
 
@@ -42,7 +43,11 @@ class CandidateScrape:
         name = path_name.next_element.next_element
         path_score = soup.div.next_sibling.next_sibling.next_element
         score = float(path_score.next_element.next_element)
-        payload = {"name": name, "score": score, "cpf": cpf, "valid_cpf": True}
+
+        clean_name = name.lower().strip()
+        clean_name = normalize('NFKD', clean_name).encode('ASCII', 'ignore').decode('utf-8')
+
+        payload = {"name": clean_name, "score": score, "cpf": cpf, "valid_cpf": True}
         self.save_candidate(payload)
 
     def save_candidate(self, payload):
@@ -59,4 +64,4 @@ if __name__ == "__main__":
     scraper_candidates = CandidateScrape()
 
     # scraper_candidates.scrape_candidate("178.422.117-11")
-    scraper_candidates.scrape_url(1000, 1000)
+    scraper_candidates.scrape_url(1005, 1007)
