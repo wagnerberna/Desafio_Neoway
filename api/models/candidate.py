@@ -7,7 +7,7 @@ class CandidateModel(db.Model):
     candidate_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     score = db.Column(db.Float(precision=2))
-    cpf = db.Column(db.String(40))
+    cpf = db.Column(db.String(11))
     valid_cpf = db.Column(db.Boolean)
 
     def __init__(self, name, score, cpf, valid_cpf):
