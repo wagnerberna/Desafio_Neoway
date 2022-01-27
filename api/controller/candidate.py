@@ -1,5 +1,3 @@
-from ast import arguments
-from inspect import Attribute
 from flask_restful import Resource, reqparse
 from models.candidate import CandidateModel
 from service.messages import *

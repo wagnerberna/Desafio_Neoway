@@ -22,9 +22,9 @@ class ProcessData:
 
     def process_payload(self, name, score, cpf):
         clean_name = name.lower().strip()
-        clean_name = normalize('NFKD', clean_name).encode(
-            'ASCII', 'ignore').decode('utf-8')
-        clean_cpf = ''.join([(char) for char in cpf if char.isdigit()])
+        clean_name = normalize("NFKD", clean_name).encode(
+            "ASCII", "ignore").decode("utf-8")
+        clean_cpf = "".join([(char) for char in cpf if char.isdigit()])
 
         cpf_is_valid = self.validate_cpf(clean_cpf)
 
