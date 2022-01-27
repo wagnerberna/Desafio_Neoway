@@ -32,11 +32,10 @@ class CandidateModel(db.Model):
             return candidate
         return None
 
+    @classmethod
     def find_cpf(cls, cpf):
-        print(cpf)
-        cpf = cls.query.filter_by(cpf=cpf).count()
-        print(cpf)
-        if cpf:
+        candidate = cls.query.filter_by(cpf=cpf).first()
+        if candidate:
             return True
         return False
 

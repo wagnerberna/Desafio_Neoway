@@ -36,18 +36,16 @@ class CandidateControllerRegister(Resource):
     def post(self):
         data = CandidateController.attributes.parse_args()
         candidate_model = CandidateModel(**data)
-        cpf = data.get("cpf")
-        print("!!!!!!!!!!--------------!!!!!!!!!!!")
-        print(cpf)
 
+        cpf = data.get("cpf")
         find_cpf = CandidateModel.find_cpf(cpf)
         if find_cpf:
-            return {"message": "candidate cpf alredy exists"}, 400
+            return CPF_ALREDY_EXISTS, 409
         try:
             candidate_model.save_candidate()
         except:
             return SAVE_INTERNAL_ERROR, 500
-        return candidate_model.json()
+        return candidate_model.json(), 201
 
 
 class CandidateController(Resource):
@@ -56,25 +54,25 @@ class CandidateController(Resource):
         "name",
         type=str,
         required=True,
-        help=FIELD_NOT_BLANK.format('name'),
+        help=FIELD_NOT_BLANK.format("name"),
     )
     attributes.add_argument(
         "score",
         type=float,
         required=True,
-        help=FIELD_NOT_BLANK.format('score'),
+        help=FIELD_NOT_BLANK.format("score"),
     )
     attributes.add_argument(
         "cpf",
         type=str,
         required=True,
-        help=FIELD_NOT_BLANK.format('cpf'),
+        help=FIELD_NOT_BLANK.format("cpf"),
     )
     attributes.add_argument(
         "valid_cpf",
         type=bool,
         required=True,
-        help=FIELD_NOT_BLANK.format('valid_cpf'),
+        help=FIELD_NOT_BLANK.format("valid_cpf"),
     )
 
     def get(self, candidate_id):

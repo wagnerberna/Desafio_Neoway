@@ -5,3 +5,4 @@ SAVE_INTERNAL_ERROR = {
 DELETED = {"message": "candidate deleted."}
 DELETED_INTERNAL_ERROR = {
     "message": "An interna erro ocurred trying to delete candidate."}
+CPF_ALREDY_EXISTS = {"message": "candidate cpf alredy exists"}

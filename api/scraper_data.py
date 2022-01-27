@@ -13,6 +13,7 @@ class CandidateScrape:
             self.scrape_page(page)
 
     def scrape_page(self, page):
+        print(f'page: {page}')
         cpfs_page = []
         endpoint = f"https://sample-university-site.herokuapp.com/approvals/{page}"
         req = requests.get(endpoint, timeout=2)
@@ -23,14 +24,11 @@ class CandidateScrape:
                 cpfs_page.append(child.get_text())
             if child.name == 'div':
                 self.scrape_cpfs_list(cpfs_page)
-        print(f'page: {page}')
-        print(cpfs_page)
 
     def scrape_cpfs_list(self, cpfs_page):
         if type(cpfs_page) is list:
             for cpf in cpfs_page:
                 self.scrape_candidate(cpf)
-                print(cpf)
 
     def scrape_candidate(self, candidate_cpf):
         cpf = candidate_cpf
@@ -45,8 +43,6 @@ class CandidateScrape:
 
         process_data = ProcessData()
         payload = process_data.process_payload(name, score, cpf)
-        print('----clean_data----')
-        print(payload)
 
         self.save_candidate(payload)
 
@@ -60,8 +56,5 @@ class CandidateScrape:
 
 if __name__ == "__main__":
 
-    scraper_candidates = CandidateScrape()
-
-    # scraper_candidates.scrape_candidate("178.422.117-11")
-    # print(validate_cpf('18563240790'))
-    scraper_candidates.scrape_url(1006, 1006)
+    # scraper_candidates = CandidateScrape()
+    # scraper_candidates.scrape_url(2010, 2011)
