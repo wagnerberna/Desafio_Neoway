@@ -32,6 +32,14 @@ class CandidateModel(db.Model):
             return candidate
         return None
 
+    def find_cpf(cls, cpf):
+        print(cpf)
+        cpf = cls.query.filter_by(cpf=cpf).count()
+        print(cpf)
+        if cpf:
+            return True
+        return False
+
     def save_candidate(self):
         db.session.add(self)
         db.session.commit()

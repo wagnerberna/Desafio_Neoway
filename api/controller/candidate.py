@@ -1,3 +1,5 @@
+from ast import arguments
+from inspect import Attribute
 from flask_restful import Resource, reqparse
 from models.candidate import CandidateModel
 from service.messages import *
@@ -13,25 +15,34 @@ class CandidateControllerRegister(Resource):
     attributes.add_argument(
         "name",
         type=str,
+        required=False,
     )
     attributes.add_argument(
         "score",
         type=float,
+        required=False,
     )
     attributes.add_argument(
         "cpf",
         type=str,
+        required=False,
     )
     attributes.add_argument(
         "valid_cpf",
         type=bool,
+        required=False,
     )
 
     def post(self):
         data = CandidateController.attributes.parse_args()
         candidate_model = CandidateModel(**data)
-        # if CandidateModel.find_candidate(candidate_id):
-        # return {"message": f"candidate ID: {candidate_id} alredy exists"}, 400
+        cpf = data.get("cpf")
+        print("!!!!!!!!!!--------------!!!!!!!!!!!")
+        print(cpf)
+
+        find_cpf = CandidateModel.find_cpf(cpf)
+        if find_cpf:
+            return {"message": "candidate cpf alredy exists"}, 400
         try:
             candidate_model.save_candidate()
         except:
