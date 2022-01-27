@@ -1,7 +1,7 @@
 from array import array
 from bs4 import BeautifulSoup
 from unicodedata import normalize
-from service.validate_cpf import validate_cpf
+from service.process_data import ProcessData
 import requests
 import time
 
@@ -44,12 +44,17 @@ class CandidateScrape:
         path_score = soup.div.next_sibling.next_sibling.next_element
         score = float(path_score.next_element.next_element)
 
-        clean_name = name.lower().strip()
-        clean_name = normalize('NFKD', clean_name).encode('ASCII', 'ignore').decode('utf-8')
-        clean_cpf = cpf = ''.join([(char) for char in cpf if char.isdigit()])
-        cpf_is_valid = validate_cpf(clean_cpf)
+        process_data = ProcessData()
+        process_data.clean_data(name, cpf)
 
-        payload = {"name": clean_name, "score": score, "cpf": clean_cpf, "valid_cpf": cpf_is_valid}
+        clean_name = name.lower().strip()
+        clean_name = normalize('NFKD', clean_name).encode(
+            'ASCII', 'ignore').decode('utf-8')
+        clean_cpf = cpf = ''.join([(char) for char in cpf if char.isdigit()])
+        cpf_is_valid = process_data.validate_cpf(clean_cpf)
+
+        payload = {"name": clean_name, "score": score,
+                   "cpf": clean_cpf, "valid_cpf": cpf_is_valid}
         self.save_candidate(payload)
 
     def save_candidate(self, payload):

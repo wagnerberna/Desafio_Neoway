@@ -1,0 +1,1 @@
+(char * cpf_length for char in "1234567890")
