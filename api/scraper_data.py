@@ -8,7 +8,6 @@ import time
 
 class CandidateScrape:
     def scrape_url(self, start_page, stop_page=4671):
-
         for page in range(start_page, stop_page + 1):
             time.sleep(5)
             self.scrape_page(page)
@@ -45,16 +44,10 @@ class CandidateScrape:
         score = float(path_score.next_element.next_element)
 
         process_data = ProcessData()
-        process_data.clean_data(name, cpf)
+        payload = process_data.process_payload(name, score, cpf)
+        print('----clean_data----')
+        print(payload)
 
-        clean_name = name.lower().strip()
-        clean_name = normalize('NFKD', clean_name).encode(
-            'ASCII', 'ignore').decode('utf-8')
-        clean_cpf = cpf = ''.join([(char) for char in cpf if char.isdigit()])
-        cpf_is_valid = process_data.validate_cpf(clean_cpf)
-
-        payload = {"name": clean_name, "score": score,
-                   "cpf": clean_cpf, "valid_cpf": cpf_is_valid}
         self.save_candidate(payload)
 
     def save_candidate(self, payload):

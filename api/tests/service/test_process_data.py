@@ -1,4 +1,3 @@
-from http.cookiejar import MozillaCookieJar
 import pytest
 from pytest import fixture
 from service.process_data import ProcessData
@@ -11,7 +10,7 @@ class TestProcessData:
         self.mock_process_data = ProcessData()
 
 
-class TestValidateCpf(TestProcessData):
+class TestProcessDataPayload(TestProcessData):
     @pytest.mark.parametrize("cpf", ["06735742028", "77852171060", "21288948085"])
     def test_validate_cpf_successful(self, cpf, my_setup):
         response_expected = True
@@ -34,4 +33,16 @@ class TestValidateCpf(TestProcessData):
     def test_validate_cpf_error_repeated_number(self, cpf, my_setup):
         response_expected = False
         response_result = self.mock_process_data.validate_cpf(cpf)
+        assert response_expected == response_result
+
+    def test_process_payload(self, my_setup):
+        data = (" BrúCê Wãine ", 95.55, "067.357.420-28")
+        payload_expected = {
+            "name": "bruce waine",
+            "score": 95.55,
+            "cpf": "06735742028",
+            "valid_cpf": True
+        }
+        response_expected = payload_expected
+        response_result = self.mock_process_data.process_payload(*data)
         assert response_expected == response_result

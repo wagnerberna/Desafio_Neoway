@@ -1,3 +1,6 @@
+from unicodedata import normalize
+
+
 class ProcessData:
     def validate_cpf(self, cpf):
         cpf_length = 11
@@ -17,6 +20,15 @@ class ProcessData:
                 return False
         return True
 
-    def clean_data(self, **data):
-        print('----clean_data----')
-        print(data)
+    def process_payload(self, name, score, cpf):
+        clean_name = name.lower().strip()
+        clean_name = normalize('NFKD', clean_name).encode(
+            'ASCII', 'ignore').decode('utf-8')
+        clean_cpf = ''.join([(char) for char in cpf if char.isdigit()])
+
+        cpf_is_valid = self.validate_cpf(clean_cpf)
+
+        payload = {"name": clean_name, "score": score,
+                   "cpf": clean_cpf, "valid_cpf": cpf_is_valid}
+
+        return payload
