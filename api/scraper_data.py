@@ -5,13 +5,12 @@ import time
 
 
 class CandidatesScrape:
-    def scrape_url(self, start_page, stop_page=4671):
+    def scrape_url(self, start_page=1, stop_page=4671, sleep_time_page=0):
         for page in range(start_page, stop_page + 1):
-            time.sleep(5)
+            time.sleep(sleep_time_page)
             self.scrape_page(page)
 
     def scrape_page(self, page):
-        print(f"page: {page}")
         cpfs_page = []
         endpoint = f"https://sample-university-site.herokuapp.com/approvals/{page}"
         req = requests.get(endpoint, timeout=2)
@@ -48,5 +47,4 @@ class CandidatesScrape:
         url_post = "http://localhost:5000/register"
 
         resp = requests.post(url_post, json=payload)
-        print(resp.status_code)
         return resp.status_code
