@@ -7,17 +7,17 @@ import time
 
 class CandidatesScrape:
     def __init__(self):
-        self.stop_scrapping = False
+        self.stop_scraping = False
 
     def scrape_url(self, start_page=1, stop_page=0, sleep_time_page=0):
         page = start_page
-        while not self.stop_scrapping:
+        while not self.stop_scraping:
             time.sleep(sleep_time_page)
             self.scrape_page(page)
 
             if (page == stop_page):
-                self.stop_scrapping = True
-                print(SCRAPPING_COMPLETED.format(page))
+                self.stop_scraping = True
+                print(SCRAPING_COMPLETED.format(page))
 
             page = page + 1
 
@@ -31,12 +31,12 @@ class CandidatesScrape:
         page_not_found = soup.find(string='404 page not found')
 
         if page_not_found:
-            self.stop_scrapping = True
+            self.stop_scraping = True
             print(PAGE_NOT_FOUND)
 
         if find_end_page:
-            self.stop_scrapping = True
-            print(SCRAPPING_COMPLETED.format(page - 1))
+            self.stop_scraping = True
+            print(SCRAPING_COMPLETED.format(page - 1))
 
         for child in soup.body.contents:
             if child.name == "li":
@@ -73,4 +73,4 @@ class CandidatesScrape:
 
 
 candidates_scrape = CandidatesScrape()
-candidates_scrape.scrape_url(41, 41)
+candidates_scrape.scrape_url(47, 50)

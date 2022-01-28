@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Api
 from controller.candidate import CandidatesController, CandidateController, CandidateControllerRegister
 
+
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -21,4 +22,4 @@ if __name__ == "__main__":
     from sql_alchemy import db
 
     db.init_app(app)
-    app.run(debug=False)
+    app.run(debug=True)

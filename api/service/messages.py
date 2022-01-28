@@ -7,4 +7,4 @@ DELETED_INTERNAL_ERROR = {
     "message": "An interna erro ocurred trying to delete candidate."}
 CPF_ALREDY_EXISTS = {"message": "candidate cpf alredy exists"}
 PAGE_NOT_FOUND = {"Error": "Page not found"}
-SCRAPPING_COMPLETED = "Scrapping completed in page: {}"
+SCRAPING_COMPLETED = "Scraping completed in page: {}"

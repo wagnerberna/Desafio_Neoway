@@ -32,7 +32,7 @@ class CandidateControllerRegister(Resource):
     )
 
     def post(self):
-        data = CandidateController.attributes.parse_args()
+        data = CandidateControllerRegister.attributes.parse_args()
         candidate_model = CandidateModel(**data)
 
         cpf = data.get("cpf")
