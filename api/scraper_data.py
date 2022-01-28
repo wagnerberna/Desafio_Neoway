@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from service.process_data import ProcessData
+from service.messages import *
 import requests
 import time
 
@@ -10,25 +11,32 @@ class CandidatesScrape:
 
     def scrape_url(self, start_page=1, stop_page=0, sleep_time_page=0):
         page = start_page
-        print(f"page start {page}")
         while not self.stop_scrapping:
             time.sleep(sleep_time_page)
             self.scrape_page(page)
+
+            if (page == stop_page):
+                self.stop_scrapping = True
+                print(SCRAPPING_COMPLETED.format(page))
+
             page = page + 1
 
-            if (page == stop_page + 1):
-                self.stop_scrapping = True
-
     def scrape_page(self, page):
-        print(f"page fn scraper {page}")
         cpfs_page = []
         endpoint = f"https://sample-university-site.herokuapp.com/approvals/{page}"
         req = requests.get(endpoint, timeout=5)
         soup = BeautifulSoup(req.text, "lxml")
+
         find_end_page = soup.find(string='Invalid page.')
+        page_not_found = soup.find(string='404 page not found')
+
+        if page_not_found:
+            self.stop_scrapping = True
+            print(PAGE_NOT_FOUND)
 
         if find_end_page:
             self.stop_scrapping = True
+            print(SCRAPPING_COMPLETED.format(page - 1))
 
         for child in soup.body.contents:
             if child.name == "li":
@@ -65,4 +73,4 @@ class CandidatesScrape:
 
 
 candidates_scrape = CandidatesScrape()
-candidates_scrape.scrape_url(100, 105)
+candidates_scrape.scrape_url(41, 41)
