@@ -70,7 +70,3 @@ class CandidatesScrape:
 
         resp = requests.post(url_post, json=payload)
         return resp.status_code
-
-
-candidates_scrape = CandidatesScrape()
-candidates_scrape.scrape_url(47, 50)
