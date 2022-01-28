@@ -5,16 +5,30 @@ import time
 
 
 class CandidatesScrape:
-    def scrape_url(self, start_page=1, stop_page=4671, sleep_time_page=0):
-        for page in range(start_page, stop_page + 1):
+    def __init__(self):
+        self.stop_scrapping = False
+
+    def scrape_url(self, start_page=1, stop_page=0, sleep_time_page=0):
+        page = start_page
+        print(f"page start {page}")
+        while not self.stop_scrapping:
             time.sleep(sleep_time_page)
             self.scrape_page(page)
+            page = page + 1
+
+            if (page == stop_page + 1):
+                self.stop_scrapping = True
 
     def scrape_page(self, page):
+        print(f"page fn scraper {page}")
         cpfs_page = []
         endpoint = f"https://sample-university-site.herokuapp.com/approvals/{page}"
-        req = requests.get(endpoint, timeout=2)
+        req = requests.get(endpoint, timeout=5)
         soup = BeautifulSoup(req.text, "lxml")
+        find_end_page = soup.find(string='Invalid page.')
+
+        if find_end_page:
+            self.stop_scrapping = True
 
         for child in soup.body.contents:
             if child.name == "li":
@@ -48,3 +62,7 @@ class CandidatesScrape:
 
         resp = requests.post(url_post, json=payload)
         return resp.status_code
+
+
+candidates_scrape = CandidatesScrape()
+candidates_scrape.scrape_url(100, 105)
